@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Clarity Playground</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpsLab — Sandbox</title>
 
   <!-- Microsoft Clarity -->
   <script type="text/javascript">
@@ -12,19 +13,337 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "upgqxc5mpt");
   </script>
+
+<style>
+
+/* =====================
+   CORE
+===================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background: #020617;
+  color: #e5e7eb;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =====================
+   HEADER
+===================== */
+
+header {
+  background: #020617;
+  border-bottom: 1px solid #1e293b;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-size: 1.1rem;
+}
+
+.status {
+  font-size: 0.8rem;
+  color: #22c55e;
+}
+
+
+/* =====================
+   LAYOUT
+===================== */
+
+main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+
+/* =====================
+   SIDEBAR
+===================== */
+
+aside {
+  background: #020617;
+  border-right: 1px solid #1e293b;
+  padding: 1.5rem;
+}
+
+.menu h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.menu button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  background: none;
+  border: 1px solid #1e293b;
+  color: #e5e7eb;
+  padding: 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.menu button:hover {
+  background: #020617;
+  border-color: #3b82f6;
+}
+
+
+/* =====================
+   CONTENT
+===================== */
+
+section {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.panel {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 1000px;
+}
+
+.panel h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.panel p {
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+}
+
+
+/* =====================
+   CONTROLS
+===================== */
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.controls button {
+  background: #020617;
+  border: 1px solid #334155;
+  color: #e5e7eb;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  border-color: #3b82f6;
+}
+
+
+/* =====================
+   CONSOLE
+===================== */
+
+.console {
+  background: black;
+  color: #22c55e;
+  font-family: monospace;
+  padding: 1rem;
+  border-radius: 8px;
+  min-height: 180px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+
+/* =====================
+   FOOTER
+===================== */
+
+footer {
+  text-align: center;
+  padding: 0.7rem;
+  font-size: 0.8rem;
+  color: #64748b;
+  border-top: 1px solid #1e293b;
+}
+
+</style>
 </head>
 
+
 <body>
-  <h1>Clarity + n8n Playground</h1>
 
-  <p>Click buttons to generate user behavior</p>
+<!-- HEADER -->
+<header>
+  <div class="logo">OPSLAB</div>
+  <div class="status">● Online</div>
+</header>
 
-  <button onclick="clarity('event', 'cta_click')">
-    CTA Click
-  </button>
 
-  <button onclick="clarity('event', 'signup_attempt')">
-    Signup Attempt
-  </button>
+<!-- MAIN -->
+<main>
+
+  <!-- SIDEBAR -->
+  <aside>
+
+    <div class="menu">
+
+      <h3>Modules</h3>
+
+      <button onclick="loadModule('system')">System</button>
+      <button onclick="loadModule('ai')">AI</button>
+      <button onclick="loadModule('automation')">Automation</button>
+      <button onclick="loadModule('data')">Data</button>
+      <button onclick="loadModule('notes')">Notes</button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- CONTENT -->
+  <section>
+
+    <div class="panel">
+
+      <h1 id="title">System Console</h1>
+
+      <p id="description">
+        Core sandbox environment. Run diagnostics and experiments.
+      </p>
+
+
+      <div class="controls">
+
+        <button onclick="runCheck()">Run Check</button>
+        <button onclick="clearConsole()">Clear</button>
+        <button onclick="showTime()">Time</button>
+
+      </div>
+
+
+      <div id="console" class="console">
+OpsLab initialized...
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+  OpsLab Sandbox · Private System Lab
+</footer>
+
+
+<!-- JS -->
+<script>
+
+const consoleBox = document.getElementById("console");
+const title = document.getElementById("title");
+const desc = document.getElementById("description");
+
+
+function log(msg) {
+  consoleBox.textContent += "\n" + msg;
+  consoleBox.scrollTop = consoleBox.scrollHeight;
+}
+
+
+function clearConsole() {
+  consoleBox.textContent = "Console cleared.";
+}
+
+
+function showTime() {
+  log("TIME → " + new Date().toLocaleString());
+}
+
+
+function runCheck() {
+
+  log("Running system diagnostics...");
+
+  setTimeout(() => {
+    log("CPU → OK");
+    log("Memory → OK");
+    log("Network → OK");
+    log("Sandbox → READY");
+  }, 600);
+
+}
+
+
+/* =====================
+   MODULE SWITCHER
+===================== */
+
+function loadModule(type) {
+
+  clearConsole();
+
+  if (type === "system") {
+    title.textContent = "System Console";
+    desc.textContent = "Core sandbox environment.";
+    log("Loaded SYSTEM module.");
+  }
+
+  if (type === "ai") {
+    title.textContent = "AI Lab";
+    desc.textContent = "LLM / prompt / agent experiments.";
+    log("Loaded AI module.");
+  }
+
+  if (type === "automation") {
+    title.textContent = "Automation Hub";
+    desc.textContent = "Workflow + webhook testing.";
+    log("Loaded AUTOMATION module.");
+  }
+
+  if (type === "data") {
+    title.textContent = "Data Panel";
+    desc.textContent = "Metrics and analytics sandbox.";
+    log("Loaded DATA module.");
+  }
+
+  if (type === "notes") {
+    title.textContent = "Notes";
+    desc.textContent = "Personal scratchpad.";
+    log("Loaded NOTES module.");
+  }
+
+}
+
+
+window.onload = () => {
+  log("System ready.");
+};
+
+</script>
+
 </body>
 </html>
