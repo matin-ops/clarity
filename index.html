@@ -345,15 +345,41 @@ window.onload = () => {
 
 </script>
 
-    <!-- n8n Chat Widget -->
-    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
-<script type="module">
-	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+<!-- n8n Chat Widget (copy-paste) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" />
 
-	createChat({
-		webhookUrl: 'https://alyssa-unliterary-sadye.ngrok-free.dev/webhook/dd0a5e61-9e50-4a17-8bb4-d145df829f34/chat'
-	});
+<!-- 1) Container (put this near the end of <body>) -->
+<div id="n8n-chat"></div>
+
+<!-- 2) Script (also near the end of <body>, AFTER the container) -->
+<script type="module">
+  import { createChat } from "https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js";
+
+  createChat({
+    webhookUrl: "https://YOUR-WEBHOOK-URL-HERE",  // <-- replace
+    target: "#n8n-chat",
+    mode: "window",
+    chatInputKey: "message",
+    chatSessionKey: "chatId",
+    loadPreviousSession: true,
+    showWelcomeScreen: false,
+    defaultLanguage: "en",
+    initialMessages: [
+      "Hi 👋",
+      "How can I help you today?"
+    ],
+    metadata: {
+      source: "website",
+      path: location.pathname
+    }
+  });
 </script>
+
+<style>
+  /* Optional: keep it neat + above other site elements */
+  #n8n-chat { position: relative; z-index: 9999; }
+</style>
+
   
 </body>
 </html>
