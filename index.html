@@ -345,5 +345,15 @@ window.onload = () => {
 
 </script>
 
+    <!-- n8n Chat Widget -->
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://alyssa-unliterary-sadye.ngrok-free.dev/webhook/dd0a5e61-9e50-4a17-8bb4-d145df829f34/chat'
+	});
+</script>
+  
 </body>
 </html>
